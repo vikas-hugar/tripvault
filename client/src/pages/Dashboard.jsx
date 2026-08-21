@@ -1,42 +1,89 @@
 import { useAuth } from '../context/AuthContext';
+import { DashboardSkeleton } from '../components/SkeletonLoader';
+import Navbar from '../components/Navbar';
 import './Dashboard.css';
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <DashboardSkeleton />;
+  }
+
+  const getInitials = (name) => {
+    if (!name) return 'TV';
+    const parts = name.trim().split(' ').filter(Boolean);
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+
+  const getFormattedDate = () => {
+    const options = { month: 'long', day: 'numeric', year: 'numeric' };
+    return new Date().toLocaleDateString('en-US', options);
+  };
+
+  const firstName = user?.name ? user.name.split(' ')[0] : 'Traveler';
 
   return (
     <div className="dashboard">
-      <header className="dash-header">
-        <span className="brand">TripVault</span>
-        <div className="dash-header-right">
-          <span className="dash-user">{user?.name}</span>
-          <button className="btn-logout" onClick={logout}>Sign out</button>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="dash-main">
-        <div className="dash-welcome">
-          <h1 className="dash-title">Welcome back, {user?.name?.split(' ')[0]}</h1>
-          <p className="dash-subtitle">Here's where your trips will live.</p>
+        {/* Editorial Header */}
+        <div className="dash-header-section">
+          <div>
+            <div className="dash-date">{getFormattedDate()}</div>
+            <h1 className="dash-title">Welcome back, {firstName}</h1>
+          </div>
+          <div className="dash-user-badge">
+            <div className="user-avatar-circle">{getInitials(user?.name)}</div>
+            <span className="user-badge-name">{user?.name}</span>
+          </div>
         </div>
 
-        <div className="dash-empty">
-          <div className="empty-icon">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="8" y="14" width="32" height="24" rx="3" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-              <path d="M8 20h32" stroke="currentColor" strokeWidth="1.5"/>
-              <circle cx="14" cy="17" r="1" fill="currentColor"/>
-              <circle cx="18" cy="17" r="1" fill="currentColor"/>
-              <circle cx="22" cy="17" r="1" fill="currentColor"/>
-              <rect x="14" y="26" width="12" height="2" rx="1" fill="currentColor" opacity="0.4"/>
-              <rect x="14" y="31" width="8" height="2" rx="1" fill="currentColor" opacity="0.25"/>
-            </svg>
+        {/* Featured Journey Card */}
+        <div className="featured-journey-card">
+          <div className="featured-img-wrapper">
+            <img
+              src="/assets/hero_editorial.png"
+              alt="Mediterranean coastal sanctuary view"
+              className="featured-journey-img"
+            />
           </div>
-          <h2 className="empty-title">No trips yet</h2>
-          <p className="empty-text">
-            When you create your first trip, it will appear here.
-          </p>
+          <div className="featured-content">
+            <div>
+              <span className="featured-badge">Featured Journey</span>
+              <h2 className="featured-title">The Mediterranean Sanctuary</h2>
+              <p className="featured-location">Amalfi Coast, Italy • Autumn 2026</p>
+              <p className="featured-desc">
+                A 7-day retreat along quiet coastal cliffs, secluded olive groves, and ancient stone villages.
+              </p>
+            </div>
+            <div>
+              <button type="button" className="btn btn-primary">
+                View Itinerary
+              </button>
+            </div>
+          </div>
         </div>
+
+        {/* Recent Journeys Grid (Line Art Empty State) */}
+        <section>
+          <h3 className="dash-section-title">Recent Journeys</h3>
+          <div className="recent-empty-card">
+            {/* Elegant Line Art SVG Compass */}
+            <svg className="line-art-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <circle cx="50" cy="50" r="42" strokeDasharray="2 3" />
+              <circle cx="50" cy="50" r="34" />
+              <path d="M50 16v8M50 76v8M16 50h8M76 50h8" />
+              <polygon points="50 26 56 50 50 74 44 50" fill="currentColor" opacity="0.15" />
+              <polygon points="50 26 56 50 50 50" fill="currentColor" opacity="0.4" />
+              <circle cx="50" cy="50" r="3" fill="currentColor" />
+            </svg>
+            <h4 className="empty-title">No recent journeys saved</h4>
+            <p className="empty-subtitle">Start crafting your next private itinerary.</p>
+          </div>
+        </section>
       </main>
     </div>
   );

@@ -40,14 +40,14 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       return res.status(400).json({
         success: false,
-        message: 'Password must be at least 6 characters'
+        message: 'Password must be at least 8 characters long'
       });
     }
 
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
 
     if (existingUser) {
       return res.status(409).json({
@@ -60,7 +60,7 @@ router.post('/register', async (req, res) => {
 
     const user = await User.create({
       name: name.trim(),
-      email,
+      email: email.toLowerCase().trim(),
       password: hashedPassword
     });
 
@@ -73,7 +73,8 @@ router.post('/register', async (req, res) => {
       user: {
         id: user._id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        createdAt: user.createdAt
       }
     });
   } catch (error) {
@@ -97,7 +98,7 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
+    const user = await User.findOne({ email: email.toLowerCase().trim() }).select('+password');
 
     if (!user) {
       return res.status(401).json({
@@ -124,7 +125,8 @@ router.post('/login', async (req, res) => {
       user: {
         id: user._id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        createdAt: user.createdAt
       }
     });
   } catch (error) {
@@ -143,7 +145,8 @@ router.get('/me', auth, async (req, res) => {
     user: {
       id: req.user._id,
       name: req.user.name,
-      email: req.user.email
+      email: req.user.email,
+      createdAt: req.user.createdAt
     }
   });
 });

@@ -1,0 +1,99 @@
+.profile-page {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-main {
+  flex: 1;
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 4rem 2.5rem 6rem 2.5rem;
+}
+
+.profile-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  padding: 3.5rem 3rem;
+  box-shadow: 0 4px 20px rgba(17, 17, 17, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-avatar-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.profile-name {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.03em;
+  margin-bottom: 0.25rem;
+}
+
+.profile-email {
+  font-size: 0.9375rem;
+  color: var(--color-secondary);
+  margin-bottom: 2rem;
+}
+
+.profile-details-grid {
+  width: 100%;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 1.5rem 0;
+  margin-bottom: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.profile-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9375rem;
+}
+
+.detail-label {
+  color: var(--color-secondary);
+  font-weight: 500;
+}
+
+.detail-value {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.profile-actions {
+  width: 100%;
+}
+
+.profile-actions .btn {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .profile-main {
+    padding: 2.5rem 1.5rem 4rem 1.5rem;
+  }
+  .profile-card {
+    padding: 2.5rem 1.5rem;
+  }
+}
